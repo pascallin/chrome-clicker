@@ -1,23 +1,93 @@
-import logo from './logo.svg';
-import './App.css';
+/*global chrome*/
+import { useState } from "react";
+import "./App.css";
 
 function App() {
+  const [ele, setEle] = useState(null);
+
+  const findEle = function (e) {
+    chrome.tabs.executeScript(null, { file: "jquery.min.js" }, function () {
+      chrome.tabs.executeScript(null, {
+        code: `
+          (function(){
+            let ele = ${ele}
+            console.log(ele)
+          })()
+        `,
+      });
+    });
+  };
+
+  const clickEle = function (e) {
+    chrome.tabs.executeScript(null, { file: "jquery.min.js" }, function () {
+      chrome.tabs.executeScript(null, {
+        code: `
+          (function(){
+            ${ele}.click()
+          })()
+        `,
+      });
+    });
+  };
+
+  const clickEleInterval = function (e) {
+    chrome.tabs.executeScript(null, { file: "jquery.min.js" }, function () {
+      chrome.tabs.executeScript(
+        null,
+        { file: "clickInterval.js" },
+        function () {
+          chrome.tabs.query({ active: true, currentWindow: true }, function (
+            tabs
+          ) {
+            var activeTab = tabs[0];
+            chrome.tabs.executeScript(activeTab.id, {
+              code: `
+              clickInterval(${ele}, "start")
+            `,
+            });
+          });
+        }
+      );
+    });
+  };
+
+  const clearClickEleInterval = function (e) {
+    chrome.tabs.executeScript(null, { file: "jquery.min.js" }, function () {
+      chrome.tabs.executeScript(
+        null,
+        { file: "clickInterval.js" },
+        function () {
+          chrome.tabs.query({ active: true, currentWindow: true }, function (
+            tabs
+          ) {
+            var activeTab = tabs[0];
+            chrome.tabs.executeScript(activeTab.id, {
+              code: `
+              clickInterval(${ele}, "stop")
+            `,
+            });
+          });
+        }
+      );
+    });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input onChange={(e) => setEle(e.target.value)} />
+      <br />
+      <button id="findEle" onClick={findEle}>
+        find element
+      </button>
+      <button id="clickEle" onClick={clickEle}>
+        click element
+      </button>
+      <button id="clickEleInterval" onClick={clickEleInterval}>
+        click element interval
+      </button>
+      <button id="clearInterval" onClick={clearClickEleInterval}>
+        clear interval
+      </button>
     </div>
   );
 }

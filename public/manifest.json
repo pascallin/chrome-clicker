@@ -3,17 +3,29 @@
   "name": "My Extension",
   "description": "This extension is a starting point to create a real Chrome extension",
   "version": "0.0.1",
-
   "browser_action": {
     "default_popup": "index.html",
     "default_title": "Open the popup"
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": ["jquery.min.js"]
+    }
+  ],
   "icons": {
     "16": "logo192.png",
     "48": "logo192.png",
     "128": "logo192.png"
   },
   "permissions": [
+    "webRequest", 
+    "webRequestBlocking",
+    "alarms",
+    "tabs",
+    "<all_urls>"
   ],
-  "content_security_policy": "script-src 'self' 'sha256-ob0FwhwFDrEp5v2ksV9QOBP4Wkv7ViugHjIuzs4ZAVs='; object-src 'self'"
+  "content_security_policy": "script-src 'self' 'sha256-ob0FwhwFDrEp5v2ksV9QOBP4Wkv7ViugHjIuzs4ZAVs='; object-src 'self';"
 }
