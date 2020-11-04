@@ -1,5 +1,7 @@
-# huawei-crapy
+# chrome-clicker
 
-Do it for 小饼干
+A Chrome extension that will select dom using JQuery and click it
 
-reference: https://chrome-apps-doc2.appspot.com/extensions/getstarted.html
+## Reference
+
+chrome extension docs: https://chrome-apps-doc2.appspot.com/extensions/getstarted.html
